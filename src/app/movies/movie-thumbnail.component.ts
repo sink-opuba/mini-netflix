@@ -8,7 +8,7 @@ import { IMovie } from './shared/movie.model';
     <div class="col-md-5">
     <img [src]="movie.poster" class="movie-poster" [alt]="movie.title"  title={{movie.title}}/>
     </div>
-    <div class="col-md-6 text-center">
+    <div class="col-md-6 m-2">
     <h3>{{movie.title}}</h3>
     <p>{{movie.year}}</p>
     </div>

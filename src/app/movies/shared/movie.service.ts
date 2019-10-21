@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { IMovie } from './movie.model';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,16 @@ export class MovieService {
   private url: string = environment.url;
 
   public searchButtonClickEventTrack = new Subject();
-  getMovies(): Observable<IMovie[]> {
+  public getMovies(): Observable<IMovie[]> {
     return this.http.get<IMovie[]>(this.url)
       .pipe(catchError(this.handleError<IMovie[]>('getMovies', [])));
+  }
+
+  public getMovie(id: number): Observable<IMovie | undefined> {
+    return this.getMovies()
+      .pipe(
+        map((movies: IMovie[]) => movies.find(movie => movie.id === id))
+      );
   }
 
   // generic error handler
