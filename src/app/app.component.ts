@@ -11,7 +11,7 @@ export class AppComponent {
   searchInput: string;
   constructor(private movieService: MovieService) {}
 
-  getSearchValue(): string {
+  getSearchValue(event): string {
     if (this.searchInput === undefined || '') {
       return;
     }
