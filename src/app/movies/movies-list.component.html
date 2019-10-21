@@ -1,0 +1,9 @@
+<div>
+  <h1 class="p-2">See all available Movies</h1>
+  <hr />
+  <div class="row">
+    <div *ngFor="let movie of filteredMovies" class="col-md-5 m-4">
+      <app-movie-thumbnail [movie]="movie"></app-movie-thumbnail>
+    </div>
+  </div>
+</div>

@@ -1,30 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, DoCheck } from '@angular/core';
 import { MovieService } from './shared/movie.service';
 import { IMovie } from './shared/movie.model';
+import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 
 @Component({
-  selector: 'app-movies-list',
-  template: `
-  <div>
-    <h1 class="p-2">See all available Movies</h1>
-    <hr/>
-    <div class="row">
-      <div *ngFor="let movie of movies" class="col-md-5 m-4">
-        <app-movie-thumbnail [movie]="movie"></app-movie-thumbnail>
-      </div>
-    </div>
-  </div>
-  `
+  templateUrl: './movies-list.component.html'
 })
-export class MoviesListComponent implements OnInit {
+export class MoviesListComponent implements OnInit, DoCheck {
+
+  constructor(private movieService: MovieService, private cdr: ChangeDetectorRef) {}
+  searchInput: any;
   movies: IMovie[];
-  constructor(private movieService: MovieService) { }
+  filteredMovies: IMovie[];
 
   ngOnInit() {
     this.movieService.getMovies().subscribe((movies => {
       this.movies = movies;
-      console.log(this.movies);
+      this.setFilteredMovies();
     }));
   }
 
+  performSearch(searchValue: string): IMovie[] {
+    searchValue = searchValue.toLocaleLowerCase();
+    return this.movies.filter((movie: IMovie) =>
+      movie.title.toLocaleLowerCase().indexOf(searchValue) !== -1);
+  }
+
+  setFilteredMovies(): void {
+    // Use entered search value to filtered available movies for display
+    this.filteredMovies = this.searchInput
+      ? this.performSearch(this.searchInput)
+      : this.movies;
+  }
+
+  ngDoCheck() {
+    // subscribe to emitted changes from subject created in movieService
+    this.movieService.searchButtonClickEventTrack.subscribe(value => {
+      this.searchInput = value;
+
+      // initiate change detection in angular
+      this.cdr.detectChanges();
+      // display filtered values matching search input
+      this.setFilteredMovies();
+    });
+  }
 }

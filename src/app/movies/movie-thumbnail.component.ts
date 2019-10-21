@@ -4,7 +4,7 @@ import { IMovie } from './shared/movie.model';
 @Component({
   selector: 'app-movie-thumbnail',
   template: `
-  <div class="row">
+  <div class="row" [routerLink]="['/movies', movie.id]">
     <div class="col-md-5">
     <img [src]="movie.poster" class="movie-poster" [alt]="movie.title"  title={{movie.title}}/>
     </div>
@@ -18,9 +18,10 @@ import { IMovie } from './shared/movie.model';
   styles: [`
     .movie-poster {
       max-height: 300px;
+      border-radius: 3%;
     }
   `]
 })
 export class MovieThumbnailComponent {
-@Input() movie: IMovie;
+  @Input() movie: IMovie;
 }

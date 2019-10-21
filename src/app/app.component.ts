@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MovieService } from './movies/shared/movie.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Mini-netflix';
+  searchInput: string;
+  constructor(private movieService: MovieService) {}
+
+  getSearchValue(): string {
+    if (this.searchInput === undefined || '') {
+      return;
+    }
+    // Emit a new value to movieService to create an observable stream
+    this.movieService.searchButtonClickEventTrack.next(this.searchInput);
+  }
 }
