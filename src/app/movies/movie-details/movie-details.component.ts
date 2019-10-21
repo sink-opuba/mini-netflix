@@ -26,5 +26,8 @@ export class MovieDetailsComponent implements OnInit {
   onBack(): void {
     this.router.navigate(['/movies']);
   }
+  addToFavourite(): void {
+    return;
+  }
 
 }
