@@ -9,10 +9,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MovieDetailsComponent implements OnInit {
   movie: IMovie;
+  id: string;
+  favourite: boolean;
+  favouriteText: string;
   constructor(private route: ActivatedRoute, private router: Router, private movieService: MovieService) { }
 
   ngOnInit() {
     const param = this.route.snapshot.params.id;
+    this.id = param;
+    this.favourite = sessionStorage.hasOwnProperty(this.id) ? true : false;
+    this.favouriteText = this.favourite ? 'Remove From Favourite' : 'Add To Favourite';
+
     if (param) {
       const id = +param; // '+' converts string to num
       this.getMovie(id);
@@ -26,8 +33,15 @@ export class MovieDetailsComponent implements OnInit {
   onBack(): void {
     this.router.navigate(['/movies']);
   }
-  addToFavourite(): void {
-    return;
+  addToFavourite(id: number): void {
+    const idString = id.toString();
+    if (sessionStorage.hasOwnProperty(idString)) {
+      sessionStorage.removeItem(idString);
+    } else {
+      sessionStorage.setItem(idString, idString);
+    }
+    this.favourite = sessionStorage.hasOwnProperty(this.id) ? true : false;
+    this.favouriteText = this.favourite ? 'Remove from Favourite' : 'Add To Favourite';
   }
 
 }

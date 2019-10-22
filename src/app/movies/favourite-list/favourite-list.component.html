@@ -1,1 +1,15 @@
-<p>You don't have favourites yet. I am still working on it.</p>
+<div>
+  <div class="m-5" *ngIf="favourites.length < 1">
+    <p class="mb-3">Oops! You don't Have any Favourite yet. Please go back to Movie list and add to your favourites.</p>
+    <button class="btn btn-outline-secondary" style="width: 80px" routerLink="/movies">
+      <i class="fa fa-chevron-left"></i> Back
+    </button>
+  </div>
+  <h2 *ngIf="favourites && favourites.length > 0" class="p-2">Here Are all Your Favourites</h2>
+  <hr />
+  <div class="row">
+    <div *ngFor="let movie of favourites" class="col-md-5 m-4">
+      <app-movie-thumbnail [movie]="movie"></app-movie-thumbnail>
+    </div>
+  </div>
+</div>

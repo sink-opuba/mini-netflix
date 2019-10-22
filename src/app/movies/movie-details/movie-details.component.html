@@ -85,9 +85,12 @@
     </button>
     <button
       class="btn btn-outline-secondary float-right"
-      (click)="addToFavourite()"
+      (click)="addToFavourite(movie.id)"
     >
-      <i class="fa fa-chevron"></i> Add To Favourite
+      <i class="fa fa-chevron"></i> {{ favouriteText }}
     </button>
   </div>
+</div>
+<div *ngIf="favourite">
+  <a class="btn badge-info" routerLink="/favourites">View all Favourites</a>
 </div>
